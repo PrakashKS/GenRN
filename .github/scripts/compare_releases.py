@@ -5,27 +5,47 @@ import json
 repo_owner = "PrakashKS"
 repo_name = "GenRN"
 headers = {
-    "Authorization": "Bearer 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",
+    "Authorization": "Bearer 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",
     "Accept": "application/vnd.github.v3+json"
 }
 
 url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases"
 response = requests.get(url, headers=headers)
-releases = response.json()
 
-# Extract information about the current and previous releases
-current_release = releases[0]  # Assuming the first release is the most recent
-previous_release = releases[1] if len(releases) > 1 else None
+print("Response Status Code:", response.status_code)
+print("Response Content:")
+print(response.content)
 
-# Compare the current release with the previous release
-if previous_release:
-    # Implement your comparison logic here
-    # You can compare commit messages, pull requests, etc.
-    # For simplicity, let's just print the names of the releases for demonstration
-    print("Current Release:", current_release["name"])
-    print("Previous Release:", previous_release["name"])
+data = response.json()
+
+#print("Printing the data element")
+#print(data)
+
+if 'message' in data:
+    error_message = data['message']
+    print(f"Error message: {error_message}")
+    print(f"Documentation URL: {data.get('documentation_url', 'N/A')}")
 else:
-    print("No previous release found.")
+    # Check if the response contains any releases
+    if data:
+        releases = data
+        if releases:
+            current_release = releases[0]  # Assuming the first release is the most recent
+            print("Current Release:", current_release["name"])
+            previous_release = releases[1] if len(releases) > 1 else None
 
-# Add logic to generate a diff or summary of changes between the releases
-# This could involve comparing commit messages, pull requests, etc.
+            # Compare the current release with the previous release
+            if previous_release:
+                # Implement your comparison logic here
+                # You can compare commit messages, pull requests, etc.
+                # For simplicity, let's just print the names of the releases for demonstration
+                print("Current Release:", current_release["name"])
+                print("Previous Release:", previous_release["name"])
+            else:
+                print("No previous release found.")
+        else:
+            print("No releases found.")
+    else:
+        print("Failed to retrieve release data from the API.")
+        
+#This is for the comparing the version 2
