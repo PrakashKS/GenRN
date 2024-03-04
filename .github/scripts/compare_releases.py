@@ -5,7 +5,7 @@ import json
 repo_owner = "PrakashKS"
 repo_name = "GenRN"
 headers = {
-    "Authorization": "Bearer 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",
+    "Authorization": "Bearer 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",
     "Accept": "application/vnd.github.v3+json"
 }
 
